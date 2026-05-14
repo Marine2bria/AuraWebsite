@@ -26,6 +26,7 @@ type Props = {
 }
 export default function AppartementCard({id, name, description, prix, image, voyageurs,position}: Appartement) {
     return (
+        <Link href={"/appartements"}>
         <div className = "card hover:scale-105 w-full h-70 text-start">
             <h1 className="title-lg text-center p-1">
                 {name}
@@ -53,9 +54,9 @@ export default function AppartementCard({id, name, description, prix, image, voy
                         </h3>
                     </div>
                     <div className="flex w-full justify-between ">
-                        <Link href={id} className="btn-secondary items-start">
+                        <div className="btn-secondary items-start">
                             Reserver
-                        </Link>
+                        </div>
                         <h1 className="text-price p-2">
                             {prix}€
                         </h1>
@@ -63,5 +64,6 @@ export default function AppartementCard({id, name, description, prix, image, voy
                 </div>
             </div>
         </div>
+        </Link>
     )
 }

@@ -3,7 +3,7 @@
 export default function proprietaire()
 {
     return (
-        <div className="h-screen bg-white pt-20 text-black">
+        <div className="h-screen bg-white pt-15 text-black">
             <Appartement/>
         </div>
     )

@@ -37,12 +37,13 @@ export default function AppartementPage() {
                     {/* IMAGE PRINCIPALE */}
                     <div className="card card-hover overflow-hidden">
 
-                        <div className="relative h-[260px] md:h-[520px] w-full">
+                        <div className="relative h-[260px] md:h-[520px] w-200 md:w-150 sm:w-100">
 
                             <Image
                                 src={app.image}
                                 alt={app.name}
                                 fill
+                                sizes = {"h-full w-full"}
                                 priority
                                 className="object-cover"
                             />

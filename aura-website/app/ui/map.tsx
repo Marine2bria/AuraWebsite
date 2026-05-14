@@ -2,7 +2,7 @@
 
 import "leaflet/dist/leaflet.css";
 
-import L, {icon} from "leaflet";
+import L,{icon} from "leaflet";
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
