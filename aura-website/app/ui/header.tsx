@@ -1,35 +1,35 @@
 ﻿import Link from "next/link";
 export function Header(){
     return (
-        <header className="fixed top-0 left-0 w-full h-20 backdrop-blur-md bg-zinc-700/40 z-50 font-sans flex items-center justify-between px-6">
+        <header className="header fixed top-0">
             <Link
-                className="text-white"
+                className="title-md"
                 href="/"
             >
                 <h1 className="text-2xl font-bold">
                     Aura Conciergerie
                 </h1>
-                <h2 className="text-sm">
+                <h2 className="title-md text-sm">
                     Haute-Corse
                 </h2>
             </Link>
-            <div className="flex items-center gap-6 text-white">
+            <div className="flex items-center gap-6">
                 <Link
-                    className="hover:text-gray-300 transition"
+                    className="hover:text-text-muted transition text-muted text-gray-400"
                     href="/appartements"
                 >
                     Voyageur
                 </Link>
 
                 <Link
-                    className="hover:text-gray-300 transition"
+                    className="hover:text-text-muted text-gray-400 transition text-muted"
                     href="/proprietaire"
                 >
                     Propriétaire
                 </Link>
 
                 <Link
-                    className="hover:text-gray-300 transition"
+                    className="hover:text-text-muted text-gray-400 transition text-muted"
                     href="/contact"
                 >
                     Contact
@@ -41,8 +41,8 @@ export function Header(){
 
 export function Bienvenue() {
     return (
-        <div className="w-full h-10 backdrop-blur-md bg-zinc-700/40 z-50 font-sans">
-            <h1 className="text-3xl text-center">
+        <div className="header justify-center">
+            <h1 className="title-lg text-center">
                 Bienvenue sur Aura Conciégerie !
             </h1>
         </div>

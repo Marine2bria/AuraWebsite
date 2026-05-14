@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {Bienvenue} from "@/app/ui/header";
 import { ArrowDown } from "lucide-react";
+import SearchBar from "@/app/ui/searchBar";
 
 export default function Home() {
   return (
@@ -11,18 +12,21 @@ export default function Home() {
           className="h-screen bg-conver bg-center relative"
           style={{ backgroundImage: "url('/corse-bastia-hd.jpg')" }}
       >
-          <div className="pt-20">
+          <div className="pt-15">
               <Bienvenue />
           </div>
-        <div
-            onClick={() => {
-              document.getElementById("next-section")?.scrollIntoView({
-                behavior: "smooth",
-              });
-            }}
-            className="cursor-pointer absolute bottom-5 left-1/2 transform -translate-x-1/2">
-          <ArrowDown className="w-8 h-8 mt-10 animate-bounce"/>
-        </div>
+          <div className="flex justify-center items-center h-2/3 items-end ">
+            <SearchBar calendarTop={true} />
+          </div>
+            <div
+                onClick={() => {
+                  document.getElementById("next-section")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+                className="cursor-pointer absolute bottom-5 left-1/2 transform -translate-x-1/2">
+              <ArrowDown className="w-8 h-8 mt-10 animate-bounce"/>
+            </div>
       </div>
       <div
           id="next-section"
