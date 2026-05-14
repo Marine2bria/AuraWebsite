@@ -1,241 +1,245 @@
-﻿"use client";
+"use client";
 
-import {Appartement} from "@/app/ui/appartementCard";
+import { Appartement } from "@/app/ui/appartementCard";
 import Image from "next/image";
 import Map from "./map";
-import {useState} from "react";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+
+const SERVICES = [
+  "Wi-Fi",
+  "Climatisation",
+  "Cuisine équipée",
+  "Parking gratuit",
+  "Vue mer",
+  "Piscine",
+];
+
+const SECONDARY_IMAGES_COUNT = 2;
 
 export default function AppartementPage() {
-    const app: Appartement = {
-        id: "",
-        name: "Nom de l'appartement",
-        description:
-            "Magnifique appartement situé en Haute-Corse avec vue sur la mer, proche des plages et du centre-ville. Idéal pour des vacances en famille ou entre amis.",
-        prix: 150,
-        image: "/corse-bastia-hd.jpg",
-        voyageurs: 4,
-        position: 2,
-    };
+  const app: Appartement = {
+    id: "",
+    name: "Nom de l'appartement",
+    description:
+      "Magnifique appartement situé en Haute-Corse avec vue sur la mer, proche des plages et du centre-ville. Idéal pour des vacances en famille ou entre amis.",
+    prix: 150,
+    image: "/corse-bastia-hd.jpg",
+    voyageurs: 4,
+    position: 2,
+  };
 
-    const [openServices, setOpenServices] = useState(false);
+  const [openServices, setOpenServices] = useState(false);
 
-    return (
-        <main className="section mx-auto flex max-w-7xl flex-col gap-10">
+  return (
+    <main className="section mx-auto flex max-w-7xl flex-col gap-10">
+      {/* HERO & GALLERY */}
+      <section className="space-y-6">
+        {/* TITLE */}
+        <h1 className="title-xl">{app.name}</h1>
 
-            {/* HERO */}
-            <section className="flex gap-5">
+        {/* GALLERY */}
+        <div className="grid gap-4 md:grid-cols-[2fr_1fr]">
+          {/* MAIN IMAGE */}
+          <div className="card card-hover overflow-hidden">
+            <div className="relative h-[260px] md:h-[520px] w-full">
+              <Image
+                src={app.image}
+                alt={app.name}
+                fill
+                priority
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            </div>
+          </div>
 
-                <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                    <h1 className="title-xl">
-                            {app.name}
-                    </h1>
+          {/* SECONDARY IMAGES */}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
+            {Array.from({ length: SECONDARY_IMAGES_COUNT }).map((_, i) => (
+              <div key={i} className="card card-hover overflow-hidden">
+                <div className="relative h-[120px] md:h-[252px] w-full">
+                  <Image
+                    src={app.image}
+                    alt={`${app.name} - photo ${i + 2}`}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                {/* GALLERY */}
-                <div className="grid gap-4 md:grid-cols-[2fr_1fr]">
+      {/* CONTENT */}
+      <section className="grid gap-8 lg:grid-cols-[1.8fr_0.9fr]">
+        {/* LEFT COLUMN */}
+        <div className="space-y-8">
+          {/* DESCRIPTION CARD */}
+          <DescriptionCard description={app.description} />
 
-                    {/* IMAGE PRINCIPALE */}
-                    <div className="card card-hover overflow-hidden">
+          {/* SERVICES CARD */}
+          <ServicesCard
+            services={SERVICES}
+            isOpen={openServices}
+            onToggle={() => setOpenServices(!openServices)}
+          />
 
-                        <div className="relative h-[260px] md:h-[520px] w-full">
+          {/* MAP CARD */}
+          <MapCard location="Haute-Corse" />
+        </div>
 
-                            <Image
-                                src={app.image}
-                                alt={app.name}
-                                fill
-                                priority
-                                className="object-cover"
-                            />
+        {/* RIGHT SIDEBAR */}
+        <PricingCard
+          price={app.prix}
+          rating={4.9}
+          travelers={app.voyageurs}
+        />
+      </section>
+    </main>
+  );
+}
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                        </div>
-                    </div>
+// ============================================================================
+// SUB-COMPONENTS
+// ============================================================================
 
-                    {/* IMAGES SECONDAIRES */}
-                    <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
+interface DescriptionCardProps {
+  description: string;
+}
 
-                        {[1, 2].map((i) => (
-                            <div
-                                key={i}
-                                className="card card-hover overflow-hidden"
-                            >
-                                <div className="relative h-[120px] md:h-[252px] w-full">
+function DescriptionCard({ description }: DescriptionCardProps) {
+  return (
+    <div className="card p-8">
+      <h2 className="title-lg mb-6">À propos de ce logement</h2>
+      <p className="text-base text-lg leading-8">{description}</p>
+    </div>
+  );
+}
 
-                                    <Image
-                                        src={app.image}
-                                        alt={app.name}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+interface ServicesCardProps {
+  services: string[];
+  isOpen: boolean;
+  onToggle: () => void;
+}
 
-            {/* CONTENT */}
-            <section className="grid gap-8 lg:grid-cols-[1.8fr_0.9fr]">
+function ServicesCard({ services, isOpen, onToggle }: ServicesCardProps) {
+  return (
+    <div className="card overflow-hidden">
+      {/* HEADER */}
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center justify-between p-8 transition hover:bg-backgroundLight/40"
+      >
+        <h2 className="title-lg">Ce que propose ce logement</h2>
+        <ChevronDown
+          size={24}
+          className={`transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
 
-                {/* LEFT */}
-                <div className="flex flex-col gap-8">
+      {/* CONTENT */}
+      {isOpen && (
+        <div className="grid transition-all duration-300 ease-in-out overflow-hidden border-t border-white/10">
+          <div className="grid gap-4 px-8 py-8 sm:grid-cols-2">
+            {services.map((service) => (
+              <ServiceItem key={service} service={service} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
-                    {/* DESCRIPTION */}
-                    <div className="card p-8">
+interface ServiceItemProps {
+  service: string;
+}
 
-                        <h2 className="title-lg mb-6 p-3 mt-3 ml-3">
-                            À propos de ce logement
-                        </h2>
+function ServiceItem({ service }: ServiceItemProps) {
+  return (
+    <div className="input flex items-center gap-3">
+      <span className="text-xl text-action">✓</span>
+      <span className="text-base">{service}</span>
+    </div>
+  );
+}
 
-                        <p className="text-base text-lg leading-8 ml-3">
-                            {app.description}
-                        </p>
-                    </div>
+interface MapCardProps {
+  location: string;
+}
 
-                    {/* SERVICES */}
-                    <div className="card overflow-hidden">
+function MapCard({ location }: MapCardProps) {
+  return (
+    <div className="card overflow-hidden">
+      <div className="p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="title-lg">Localisation</h2>
+          <span className="text-muted text-sm font-medium">{location}</span>
+        </div>
+        <div className="h-[400px] overflow-hidden rounded-2xl">
+          <Map />
+        </div>
+      </div>
+    </div>
+  );
+}
 
-                        {/* HEADER */}
-                        <button
-                            type="button"
-                            onClick={() => setOpenServices(!openServices)}
-                            className="
-                                flex
-                                w-full
-                                items-center
-                                justify-between
-                                p-8
-                                transition
-                                hover:bg-backgroundLight/40"
-                        >
-                            <h2 className="title-lg">
-                                Ce que propose ce logement
-                            </h2>
+interface PricingCardProps {
+  price: number;
+  rating: number;
+  travelers: number;
+}
 
-                            <span
-                                className={`
-                                    text-2xl
-                                    transition-transform
-                                    duration-300
-                                    ${openServices ? "rotate-180" : ""}
-                                `}
-                            >
-                            ⌄
-                            </span>
-                        </button>
+function PricingCard({ price, rating, travelers }: PricingCardProps) {
+  return (
+    <aside className="sticky top-28 h-fit">
+      <div className="card flex flex-col gap-6 p-6">
+        {/* PRICE & RATING */}
+        <div className="space-y-4">
+          <div className="flex items-end justify-between">
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-bold text-primary">{price}</span>
+              <span className="text-muted mb-1">€/nuit</span>
+            </div>
+            <div className="tag">⭐ {rating}</div>
+          </div>
+        </div>
 
-                        {/* CONTENT */}
-                        {openServices && <div
-                            className={"grid transition-all duration-300 ease-in-out"}>
-                            <div className="overflow-hidden">
+        {/* INFO ITEMS */}
+        <div className="space-y-3">
+          <InfoItem label="Voyageurs" value={travelers.toString()} />
+          <InfoItem label="Arrivée" value="Flexible" />
+        </div>
 
-                                <div className="grid gap-4 px-8 pb-8 sm:grid-cols-2">
+        {/* CTA */}
+        <button className="btn-primary w-full py-4 text-lg font-semibold">
+          Réserver maintenant
+        </button>
 
-                                    {[
-                                        "Wi-Fi",
-                                        "Climatisation",
-                                        "Cuisine équipée",
-                                        "Parking gratuit",
-                                        "Vue mer",
-                                        "Piscine",
-                                    ].map((service) => (
-                                        <div
-                                            key={service}
-                                            className="input flex items-center gap-3"
-                                        >
-                        <span className="text-xl">
-                            ✓
-                        </span>
+        {/* DISCLAIMER */}
+        <p className="text-small text-center">
+          Aucun paiement débité pour le moment.
+        </p>
+      </div>
+    </aside>
+  );
+}
 
-                                            <span className="text-base">
-                            {service}
-                        </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>}
-                    </div>
+interface InfoItemProps {
+  label: string;
+  value: string;
+}
 
-                    {/* MAP */}
-                    <div className="card overflow-hidden p-4">
-
-                        <div className="mb-4 flex items-center justify-between">
-
-                            <h2 className="title-lg">
-                                Localisation
-                            </h2>
-
-                            <span className="text-muted">
-                                Haute-Corse
-                            </span>
-                        </div>
-
-                        <div className="h-[400px] overflow-hidden rounded-2xl">
-                            <Map />
-                        </div>
-                    </div>
-                </div>
-
-                {/* RIGHT */}
-                <aside className="sticky top-28 h-fit">
-
-                    <div className="card flex flex-col gap-6 p-6">
-
-                        <div className="flex items-end justify-between">
-
-                            <div className="flex items-end gap-2">
-
-                                <span className="text-4xl font-bold text-primary ml-3">
-                                    {app.prix}€
-                                </span>
-
-                                <span className="text-muted mb-1">
-                                    / nuit
-                                </span>
-                            </div>
-
-                            <div className="tag">
-                                ⭐ 4.9
-                            </div>
-                        </div>
-
-                        {/* INFOS */}
-                        <div className="flex flex-col gap-4">
-
-                            <div className="input flex items-center justify-between">
-                                <span className="text-muted">
-                                    Voyageurs
-                                </span>
-
-                                <span className="font-semibold">
-                                    {app.voyageurs}
-                                </span>
-                            </div>
-
-                            <div className="input flex items-center justify-between">
-                                <span className="text-muted">
-                                    Arrivée
-                                </span>
-
-                                <span className="font-semibold">
-                                    Flexible
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* CTA */}
-                        <button className="btn-primary w-full py-4 text-lg">
-                            Réserver maintenant
-                        </button>
-
-                        <p className="text-small text-center">
-                            Aucun paiement débité pour le moment.
-                        </p>
-                    </div>
-                </aside>
-
-            </section>
-        </main>
-    );
+function InfoItem({ label, value }: InfoItemProps) {
+  return (
+    <div className="input flex items-center justify-between">
+      <span className="text-muted">{label}</span>
+      <span className="font-semibold text-text">{value}</span>
+    </div>
+  );
 }
